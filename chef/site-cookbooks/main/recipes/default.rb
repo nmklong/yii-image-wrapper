@@ -18,10 +18,10 @@ include_recipe 'postgresql::client'
 include_recipe 'python'
 
 
-yii_version = node[:skeleton][:yii_version]
-app_user = node[:skeleton][:app_user]
-db = node[:skeleton][:db]
-site_dir = node[:skeleton][:site_dir]
+yii_version = node[:image_wrapper][:yii_version]
+app_user = node[:image_wrapper][:app_user]
+db = node[:image_wrapper][:db]
+site_dir = node[:image_wrapper][:site_dir]
 
 
 yii_framework yii_version do
@@ -52,7 +52,7 @@ user app_user do
 end
 
 
-directory node[:skeleton][:log_dir] do
+directory node[:image_wrapper][:log_dir] do
     action :create
     recursive true
 end
@@ -89,7 +89,7 @@ end
 end
 
 
-site_name = 'skeleton'
+site_name = 'image_wrapper'
 
 template "/etc/nginx/sites-available/#{site_name}" do
     source 'nginx-site.erb'
@@ -113,8 +113,8 @@ end
     end
 end
 
-python_env = node[:skeleton][:python][:virtualenv]
-build_dir = node[:skeleton][:python][:build_dir]
+python_env = node[:image_wrapper][:python][:virtualenv]
+build_dir = node[:image_wrapper][:python][:build_dir]
 
 
 [build_dir, python_env].each do |dir|
@@ -145,14 +145,14 @@ bash 'run schemup' do
     EOH
 end
 
-template '/etc/logrotate.d/skeleton.cogini.com' do
+template '/etc/logrotate.d/image_wrapper.cogini.com' do
     mode '644'
     source 'logrotate.erb'
 end
 
 
-if node[:skeleton][:htpasswd]
-    node[:skeleton][:htpasswd].each do |username, passwd|
+if node[:image_wrapper][:htpasswd]
+    node[:image_wrapper][:htpasswd].each do |username, passwd|
         htpasswd "#{site_dir}/../.htpasswd" do
             user username
             password passwd

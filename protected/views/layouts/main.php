@@ -68,16 +68,5 @@
 
 </div><!-- page -->
 
-<?php if (Yii::app()->params['csync_enable']) { ?>
-    <script>
-        var css_sync = {
-            "config": {
-                "port": <?= Yii::app()->params['csync_port'] ?>
-            }
-        };
-    </script>
-    <script src="/css-sync/css-reload.js"></script>
-<?php } ?>
-
 </body>
 </html>

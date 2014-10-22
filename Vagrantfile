@@ -6,11 +6,8 @@ Vagrant.configure('2') do |config|
     config.vm.box = 'precise32'
     config.vm.box_url = 'http://boxes.cogini.com/precise32.box'
 
-    csync_port = 9252
-
-    config.vm.network :forwarded_port, guest: 80, host: 9250
-    config.vm.network :forwarded_port, guest: 22, host: 9251, id: "ssh", auto_correct: true
-    config.vm.network :forwarded_port, guest: 8888, host: csync_port
+    config.vm.network :forwarded_port, guest: 80, host: 9010
+    config.vm.network :forwarded_port, guest: 22, host: 9011, id: "ssh", auto_correct: true
 
     # apt wants the partial folder to be there
     apt_cache = './.cache/apt'
@@ -47,13 +44,7 @@ Vagrant.configure('2') do |config|
         ]
 
         chef.json = {
-            :skeleton => {
-                :csync_enable => true,
-                :csync_port => csync_port,
-                #:htpasswd => {
-                    #:user1 => "password1",
-                    #:user2 => "password2"
-                #},
+            :image_wrapper => {
                 :server_name => 'localhost',
                 :log_dir => '/vagrant/logs',
                 :site_dir => '/vagrant',
