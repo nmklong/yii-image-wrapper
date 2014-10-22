@@ -31,13 +31,6 @@ class User extends CActiveRecord {
      */
     public function rules() {
         return array(
-            array('username','length','max'=>128),
-            array('username', 'required'),
-            array('username', 'unique'),
-            array('password', 'required', 'on'=>'insert'),
-            array('password', 'compare', 'compareAttribute'=>'password_repeat', 'on'=>'insert'),
-            array('password', 'checkPassword', 'on'=>'update'),
-            array('password', 'unsafe'),
         );
     }
 

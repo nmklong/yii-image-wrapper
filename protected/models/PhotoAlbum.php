@@ -1,21 +1,21 @@
 <?php
 
 /**
- * This is the model class for table "photo".
+ * This is the model class for table "photo_album".
  *
- * The followings are the available columns in table 'photo':
+ * The followings are the available columns in table 'photo_album':
  * @property integer $id
- * @property string $filename
- * @property string $model_name
- * @property integer $model_id
+ * @property string $name
  * @property string $created_at
  */
-class Photo extends ImageHaver
+class PhotoAlbum extends CActiveRecord
 {
+    const PHOTO_TYPE = 'album_photos';
+
 	/**
 	 * Returns the static model of the specified AR class.
 	 * @param string $className active record class name.
-	 * @return Photo the static model class
+	 * @return PhotoAlbum the static model class
 	 */
 	public static function model($className=__CLASS__)
 	{
@@ -27,7 +27,7 @@ class Photo extends ImageHaver
 	 */
 	public function tableName()
 	{
-		return 'photo';
+		return 'photo_album';
 	}
 
 	/**
@@ -38,12 +38,10 @@ class Photo extends ImageHaver
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('model_id', 'numerical', 'integerOnly'=>true),
-			array('model_name', 'length', 'max'=>64),
-			array('filename, created_at', 'safe'),
+			array('name, created_at', 'safe'),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
-			array('id, filename, model_name, model_id, created_at', 'safe', 'on'=>'search'),
+			array('id, name, created_at', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -55,6 +53,7 @@ class Photo extends ImageHaver
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
+            'photos' => array(self::HAS_MANY, 'Photo', 'model_id' , 'condition' => 'model_name = :mn' , 'params' => array(':mn' => $this->tableName()) ),
 		);
 	}
 
@@ -65,9 +64,7 @@ class Photo extends ImageHaver
 	{
 		return array(
 			'id' => 'ID',
-			'filename' => 'Filename',
-			'model_name' => 'Model Name',
-			'model_id' => 'Model',
+			'name' => 'Name',
 			'created_at' => 'Created At',
 		);
 	}
@@ -84,9 +81,7 @@ class Photo extends ImageHaver
 		$criteria=new CDbCriteria;
 
 		$criteria->compare('id',$this->id);
-		$criteria->compare('filename',$this->filename,true);
-		$criteria->compare('model_name',$this->model_name,true);
-		$criteria->compare('model_id',$this->model_id);
+		$criteria->compare('name',$this->name,true);
 		$criteria->compare('created_at',$this->created_at,true);
 
 		return new CActiveDataProvider($this, array(
@@ -94,8 +89,15 @@ class Photo extends ImageHaver
 		));
 	}
 
-    public function afterDelete() {
-        $this->deleteImages($this->model_name);
+    public function afterSave() {
+        $images = CUploadedFile::getInstancesByName($this::PHOTO_TYPE);
+        MyLog::debug('..........' . print_r($_FILES , true));
+        foreach($images as $image) {
+            $photo = new Photo;
+            $photo->model_id = $this->id;
+            $photo->model_name = $this::PHOTO_TYPE;
+            $photo->setImage($this::PHOTO_TYPE, $image);
+            $photo->save(false);
+        }
     }
-
 }
