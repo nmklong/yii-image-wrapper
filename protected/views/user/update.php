@@ -1,14 +1,21 @@
-<h2>Updating User:  <?= CHtml::encode($model->username) ?></h2>
+<?php
+/* @var $this UserController */
+/* @var $model User */
 
-<? if (Yii::app()->user->checkAccess('admin')) { ?>
-<div class="actionBar">
-[<?= CHtml::link('New User', array('create')) ?>]
-[<?= CHtml::link('Manage Users', array('admin')) ?>]
-</div>
-<? } ?>
+$this->breadcrumbs=array(
+	'Users'=>array('index'),
+	$model->id=>array('view','id'=>$model->id),
+	'Update',
+);
 
-<?= $this->renderPartial('_form', array(
-	'model'=>$model,
-    'scenario'=>'update',
-	'update'=>true
-)) ?>
+$this->menu=array(
+	array('label'=>'List User', 'url'=>array('index')),
+	array('label'=>'Create User', 'url'=>array('create')),
+	array('label'=>'View User', 'url'=>array('view', 'id'=>$model->id)),
+	array('label'=>'Manage User', 'url'=>array('admin')),
+);
+?>
+
+<h1>Update User <?php echo $model->id; ?></h1>
+
+<?php echo $this->renderPartial('_form', array('model'=>$model)); ?>

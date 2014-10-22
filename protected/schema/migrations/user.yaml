@@ -1,7 +1,7 @@
 ---
 table: yii_user
 from: null
-to: lmd_1
+to: nmkl_1
 sql: |
   CREATE TABLE "yii_user" (
     "id" SERIAL NOT NULL PRIMARY KEY,

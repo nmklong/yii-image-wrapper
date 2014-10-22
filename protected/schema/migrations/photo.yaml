@@ -1,0 +1,14 @@
+table: photo
+from: null
+to: nmkl_1
+depends:
+  - [yii_user , nmkl_1]
+sql:  |
+  CREATE TABLE photo(
+    id SERIAL NOT NULL PRIMARY KEY,
+    filename TEXT,
+    model_name VARCHAR(64),
+    model_id INT,
+    created_at TIMESTAMP WITHOUT TIME ZONE DEFAULT NOW()
+  );
+

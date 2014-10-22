@@ -10,8 +10,6 @@ class User extends CActiveRecord {
     public $passwordInvalid = false;
     public $sendNewPassword = false;
 
-    /** For the captcha */
-    public $validacion;
 
     /**
      * Returns the static model of the specified AR class.
@@ -36,24 +34,10 @@ class User extends CActiveRecord {
             array('username','length','max'=>128),
             array('username', 'required'),
             array('username', 'unique'),
-/*
-            array('email','length','max'=>128),
-            array('email', 'required'),
-            array('email', 'email'),
-            #array('email', 'unique'),*/
-
-            #array('password','length','max'=>128),
             array('password', 'required', 'on'=>'insert'),
             array('password', 'compare', 'compareAttribute'=>'password_repeat', 'on'=>'insert'),
             array('password', 'checkPassword', 'on'=>'update'),
             array('password', 'unsafe'),
-
-/*            array('name','length','max'=>60),
-array('phone','length','max'=>60),*/
-
-            array('validacion',
-               'application.extensions.recaptcha.EReCaptchaValidator',
-               'privateKey'=>Yii::app()->params['recaptcha_privatekey'], 'on'=>'insert'),
         );
     }
 
@@ -83,7 +67,6 @@ array('phone','length','max'=>60),*/
      */
     public function relations() {
         return array (
-            //'docs'=>array(self::HAS_MANY, 'Doc', 'author_id'),
         );
     }
 
@@ -94,40 +77,9 @@ array('phone','length','max'=>60),*/
         return array(
             'username' => 'Username',
             'password_repeat' => 'Confirm Password',
-            'validacion' => Yii::t('CAPTCHA', 'Enter both words<br />separated by a space: '),
         );
     }
 
-    #public function validate($scenario, $attributes) {
-    #  $valid = parent::validate($scenario, $attributes);
-#
-#      if ($scenario == 'insert' && !$this->attributes['password']) {
-#        $this->addError("password", "Password cannot be blank");
-#        $this->passwordInvalid = true;
-#        $valid = false;
-#      }
-#
-#      return $valid;
-#    }
-
-    #public function beforeSave() {
-    #  // Screw you, MVC
-    #  if ($_POST['_noFillPassword'])
-    #    $this->password = md5($this->attributes['password']);
-#
-#      return true;
-#    }
-
-    protected function beforeValidate() {
-        if ($this->isNewRecord) {
-            $this->created_at = $this->updated_at = date('Y-m-d H:i:s');
-        }
-        else {
-            $this->updated_at = date('Y-m-d H:i:s');
-        }
-
-        return true;
-    }
 
     public function getRoleName() {
         $auth = Yii::app()->authManager;
@@ -137,12 +89,8 @@ array('phone','length','max'=>60),*/
     }
 
     public function encryptPassword() {
-        # TODO: use salt?
-        # if(md5(md5($this->password).$user->salt)!==$user->password)
-        #Yii::log(__FUNCTION__."> encryptPassword password before hash = " . $this->password, 'debug');
         $this->passwordUnHashed = $this->password;
         $this->password = md5($this->password);
-        #Yii::log(__FUNCTION__."> encryptPassword password after  hash = " . $this->password, 'debug');
     }
 
     public function generatePassword($length=8) {

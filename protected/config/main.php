@@ -9,7 +9,7 @@ Yii::setPathOfAlias('uploadURL', '/images/uploads/');
 
 return CMap::mergeArray(array(
     'basePath'=>dirname(__FILE__).DIRECTORY_SEPARATOR.'..',
-    'name'=>'Skeleton',
+    'name'=>'Image Wrapper',
 
     'preload'=>array('log'),
 

@@ -1,28 +1,64 @@
-<h2>Manage Users</h2>
+<?php
+/* @var $this UserController */
+/* @var $model User */
 
-<div class="actionBar">
-[<?= CHtml::link('New User', array('create')) ?>]
-</div>
+$this->breadcrumbs=array(
+	'Users'=>array('index'),
+	'Manage',
+);
 
-<table class="dataGrid">
-  <tr>
-    <th><?= $sort->link('username') ?></th>
-    <th><?= $sort->link('role') ?></th>
-	<th>Actions</th>
-  </tr>
-<? foreach($userList as $n=>$model) { ?>
-  <tr class="<?= $n%2?'even':'odd';?>">
-    <td><?= CHtml::link(CHtml::encode($model->username), array('show', 'id'=>$model->id)) ?></td>
-    <td><?= CHtml::encode($model->getRoleName()) ?></td>
-    <td>
-      <?= CHtml::link('Edit',array('update','id'=>$model->id)) ?>
-      <?= CHtml::linkButton('Delete',array(
-      	  'submit'=>'',
-      	  'params'=>array('command'=>'delete','id'=>$model->id),
-      	  'confirm'=>"Are you sure to delete " . CHtml::encode($model->username) ."?")) ?>
-	</td>
-  </tr>
-<? } ?>
-</table>
-<br/>
-<?php $this->widget('CLinkPager',array('pages'=>$pages)) ?>
+$this->menu=array(
+	array('label'=>'List User', 'url'=>array('index')),
+	array('label'=>'Create User', 'url'=>array('create')),
+);
+
+Yii::app()->clientScript->registerScript('search', "
+$('.search-button').click(function(){
+	$('.search-form').toggle();
+	return false;
+});
+$('.search-form form').submit(function(){
+	$('#user-grid').yiiGridView('update', {
+		data: $(this).serialize()
+	});
+	return false;
+});
+");
+?>
+
+<h1>Manage Users</h1>
+
+<p>
+You may optionally enter a comparison operator (<b>&lt;</b>, <b>&lt;=</b>, <b>&gt;</b>, <b>&gt;=</b>, <b>&lt;&gt;</b>
+or <b>=</b>) at the beginning of each of your search values to specify how the comparison should be done.
+</p>
+
+<?php echo CHtml::link('Advanced Search','#',array('class'=>'search-button')); ?>
+<div class="search-form" style="display:none">
+<?php $this->renderPartial('_search',array(
+	'model'=>$model,
+)); ?>
+</div><!-- search-form -->
+
+<?php $this->widget('zii.widgets.grid.CGridView', array(
+	'id'=>'user-grid',
+	'dataProvider'=>$model->search(),
+	'filter'=>$model,
+	'columns'=>array(
+		'id',
+		'username',
+		'email',
+		'password',
+		'unique_id',
+		'role',
+		/*
+		'is_activated',
+		'is_approved',
+		'created_at',
+		'updated_at',
+		*/
+		array(
+			'class'=>'CButtonColumn',
+		),
+	),
+)); ?>

@@ -1,12 +1,18 @@
-<div class="actionBar">
-<? if (Yii::app()->user->checkAccess('admin')) { ?>
-[<?= CHtml::link('Manage Users', array('admin')); ?>]
-<? } ?>
-</div>
+<?php
+/* @var $this UserController */
+/* @var $model User */
 
-<?= $this->renderPartial('_form', array(
-	'model'=>$model,
-    'scenario'=>'create',
-	'update'=>false,
-)) ?>
+$this->breadcrumbs=array(
+	'Users'=>array('index'),
+	'Create',
+);
 
+$this->menu=array(
+	array('label'=>'List User', 'url'=>array('index')),
+	array('label'=>'Manage User', 'url'=>array('admin')),
+);
+?>
+
+<h1>Create User</h1>
+
+<?php echo $this->renderPartial('_form', array('model'=>$model)); ?>
