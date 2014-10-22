@@ -1,0 +1,13 @@
+description "Start the css-sync server"
+author "Hoang Xuan Phu <phu@gmail.com>"
+
+start on runlevel [2345]
+stop on runlevel [06]
+
+setuid vagrant
+script
+    cd /home/vagrant/css-sync
+    node css-sync
+end script
+
+respawn

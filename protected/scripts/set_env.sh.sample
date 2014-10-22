@@ -1,0 +1,13 @@
+#!/bin/sh
+
+export DB_HOST=localhost
+export DB_NAME=lewisiselin
+export DB_USER=lewisiselin
+export DB_PASS=secret
+
+export PGDATABASE=$DATABASE
+export PGHOST=$DB_HOST
+export PGUSER=$DB_USER
+export PGPASSWORD=$DB_PASS
+
+#alias domysql='mysql -h $DB_HOST -u $DB_USER -p${DB_PASS} $DB_NAME'

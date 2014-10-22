@@ -1,0 +1,13 @@
+*~
+.*.swp
+/.cache
+/.vagrant
+/assets
+/css-sync
+/logs
+/protected/config/db.json
+/protected/config/local.php
+/protected/runtime/
+/protected/scripts/set_env.sh
+/protected/config/console.php
+/images/uploads/

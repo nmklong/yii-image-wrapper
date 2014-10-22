@@ -1,0 +1,41 @@
+<?php
+
+return array(
+   'components'=>array(
+        'db'=>array(
+            'connectionString' => "pgsql:dbname=DB_NAME_HERE;host=DB_HOST_HERE",
+            // 'emulatePrepare' => true,
+            'username' => 'DB_USER_HERE',
+            'password' => 'DB_PASSWOD_HERE',
+            'charset' => 'utf8',
+            // turn on schema caching to improve performance
+            // 'schemaCachingDuration'=>3600,
+        ),
+    ),
+
+    'params'=>array(
+        'home_url' => 'http://lewisiselin.cogini.com', // Where top level link goes to
+
+        'timezone'=>"Asia/Taipei",
+
+        // Used in the contact page
+        'adminEmail'=>'support@cogini.com',
+
+        // This is used as the sender of emails
+        'app_email_name' => 'Lewis Iselin',
+        'app_email' => 'support@cogini.com',
+        'email_prefix' => '[Lewis Iselin] ',
+
+        'support_email' => 'support@cogini.com',
+        'email_prefix' => '', // put at the begining of the subject line
+        'contact_email' => 'support@cogini.com', // this is used in the contact page
+
+        // Notified when a new user signs up
+        'notify_email' => 'support@cogini.com',
+
+        // Cogini
+        'recaptcha_publickey' => '6LdkzgsAAAAAAGFJ5GdJyXf4JvFqKJe5N0-F3IRt',
+        'recaptcha_privatekey' => '6LdkzgsAAAAAAD6w-JyWXLfN1260aeRNl33I-JH9',
+        "google_analytics_profile" => "UA-7881029-2",
+    ),
+);
