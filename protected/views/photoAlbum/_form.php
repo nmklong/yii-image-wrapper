@@ -25,7 +25,7 @@
 	</div>
 
     <div class="row">
-        <?= CHtml::fileField(PhotoAlbum::PHOTO_TYPE , '' , array('multiple' => true)) ?>
+        <?= CHtml::fileField(PhotoAlbum::PHOTO_TYPE . '[]' , '' , array('multiple' => true)) ?>
     </div>
 
 	<div class="row buttons">
